@@ -7,13 +7,13 @@ const text = document.getElementById("text");
 const amount = document.getElementById("amount");
 
 const dummyTransactions = [
-    {id: 1, text: 'Flower', amount: -20},
+    {id: 1, text:'Flowers', amount: -20},
     {id: 2, text: 'Salary', amount: 300},
     {id: 3, text: 'Book', amount: -10},
     {id: 4, text: 'Camera', amount: 150}
 ];
 
-let transaction = dummyTransactions;
+let transactions = dummyTransactions;
 
 //add transaction to DOM list 
 function addTransactionDOM(transaction){
@@ -25,7 +25,7 @@ function addTransactionDOM(transaction){
     //add class based on value 
     item.classList.add(transaction.amount < 0 ? 'minus':'plus');
 
-    item.innerHTML = `
+    item.innerHTML =`
     ${transaction.text} <span>${sign}${math.abs(
         transaction.amount)}
     </span> <button class="delete-btn">x</button>
@@ -33,13 +33,22 @@ function addTransactionDOM(transaction){
 
     list.appendChild(item);
 }
+// update the balance income and expense
+function updateValues() {
+    const amounts = transactions.map(transaction => transaction.amount);
+    
+    const total = amounts.reduce((acc,item) => (acc += item), 0).toFixed(2); 
+    
+    console.log(total);
+}
 
 // init app 
 function init() {
     list.innerHTML = '';
 
 
-    transaction.forEach(addTransactionDOM);
+    transactions.forEach(addTransactionDOM);
+    updateValues();
 }
 
 init();
