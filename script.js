@@ -7,10 +7,11 @@ const text = document.getElementById("text");
 const amount = document.getElementById("amount");
 
 const dummyTransactions = [
-    {id: 1, text:'Flowers', amount: -20},
-    {id: 2, text: 'Salary', amount: 300},
-    {id: 3, text: 'Book', amount: -10},
-    {id: 4, text: 'Camera', amount: 150}
+ { id: 1, text:'Flowers', amount: -20},
+ { id: 2, text: 'Salary', amount: 300},
+ { id: 3, text: 'Book', amount: -10},
+ { id: 4, text: 'Camera', amount: 150}
+
 ];
 
 let transactions = dummyTransactions;
@@ -25,21 +26,35 @@ function addTransactionDOM(transaction){
     //add class based on value 
     item.classList.add(transaction.amount < 0 ? 'minus':'plus');
 
-    item.innerHTML =`
-    ${transaction.text} <span>${sign}${math.abs(
-        transaction.amount)}
-    </span> <button class="delete-btn">x</button>
-    `;
+    item.innerHTML = `
+      ${transaction.text} <span>${sign}${Math.abs(transaction.amount)}
+    </span> <button class="delete-btn">x</button>`;
 
     list.appendChild(item);
 }
-// update the balance income and expense
+
+// update the balance, income and expense
 function updateValues() {
     const amounts = transactions.map(transaction => transaction.amount);
     
     const total = amounts.reduce((acc,item) => (acc += item), 0).toFixed(2); 
     
-    console.log(total);
+    const income = amounts
+     .filter(item => item > 0)
+     .reduce((acc, item) => (acc += item), 0)
+     .toFixed(2);
+
+    const expense = (
+     amounts
+      .filter(item => item < 0)
+      .reduce((acc,item) => (acc += item), 0) * -1) 
+      .toFixed(2);
+
+    balance.innerText = `$${total}`; 
+    money_plus.innerText = `$${income}` 
+    money_minus.innerText = `$${expense}` 
+
+
 }
 
 // init app 
@@ -48,7 +63,7 @@ function init() {
 
 
     transactions.forEach(addTransactionDOM);
-    updateValues();
+    updateValues();     
 }
 
 init();
